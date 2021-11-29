@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="577f29a8-754e-4e97-b5d7-ab615184f608" name="Default Changelist" comment="" />
+    <list default="true" id="577f29a8-754e-4e97-b5d7-ab615184f608" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/fenlon.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/Bootstrap.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/controllers/Base.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/controllers/Error.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/controllers/Index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/controllers/Public.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/controllers/User.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/library/Image/Captcha.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/include/foot.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/include/head.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/index/index.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/public/forgot.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/public/login.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/public/recover.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/views/public/register.phtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/conf/application.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/adminlte3/adminlte.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/adminlte3/all.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/adminlte3/google.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/adminlte3/icheck-bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-brands-400.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-brands-400.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-brands-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-brands-400.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-brands-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-regular-400.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-regular-400.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-regular-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-regular-400.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-regular-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-solid-900.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-solid-900.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-solid-900.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-solid-900.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/webfonts/fa-solid-900.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/font.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/avatar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/logobig.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/adminlte3/adminlte.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/adminlte3/bootstrap.bundle.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/adminlte3/jquery.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/form.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,12 +73,16 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/../php-yaf-doc" />
     </include_path>
   </component>
   <component name="ProjectId" id="218BpwUEZByLzl7GfTwN7vvZ835" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -61,7 +118,7 @@
       <updated>1637313020304</updated>
       <workItem from="1637313021447" duration="10990000" />
       <workItem from="1637722030098" duration="7411000" />
-      <workItem from="1637804951000" duration="55335000" />
+      <workItem from="1637804951000" duration="56278000" />
     </task>
     <servers />
   </component>
