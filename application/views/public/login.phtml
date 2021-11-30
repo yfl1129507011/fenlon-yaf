@@ -24,9 +24,9 @@
         <div class="card-body">
             <p class="login-box-msg">帐户登录</p>
 
-            <form action="" method="post">
+            <form action="login.html" method="post">
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="邮箱" required>
+                    <input check-field="true" type="email" name="email" class="form-control" placeholder="邮箱" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="密码" required>
+                    <input check-field="true" type="password" name="password" class="form-control" placeholder="密码" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="captcha" class="form-control" autocomplete="off" placeholder="验证码" required>
+                    <input check-field="true" type="text" name="captcha" class="form-control" autocomplete="off" placeholder="验证码" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-check"></span>
@@ -57,10 +57,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="input-group mb-3">
+                    <span id="feedback-mark" class="error invalid-feedback">请输入邮箱地址</span>
+                </div>
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
+                            <input name="remember" type="checkbox" id="remember">
                             <label for="remember">
                                 记住我
                             </label>
