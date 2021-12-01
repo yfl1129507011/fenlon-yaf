@@ -59,7 +59,7 @@ $(function () {
             var that = $(this);
             $.post(that.attr("action"), that.serialize(), function (data) {
                 if (data.code == 200) {
-                    location.href = data.returnUrl;
+                    location.href = data.return_url;
                 } else {
                     formCheck.formFeedback(data.msg);
                     $('#get-captcha').click();
