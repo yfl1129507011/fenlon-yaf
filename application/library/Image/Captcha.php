@@ -7,9 +7,6 @@
  */
 namespace Image;
 
-use mysql_xdevapi\Session;
-use Yaf\Request\Http;
-
 class Captcha {
     private static $instance = null;
     // 参数配置信息
@@ -134,7 +131,7 @@ class Captcha {
      */
     private function saveCode() {
         // todo setcookie()
-        setcookie(md5($this->flag), md5(strtolower($this->code)), time()+$this->expire);
+        setcookie(md5($this->flag), md5(strtolower($this->code)), $_SERVER['REQUEST_TIME']+$this->expire);
     }
 
     /**
