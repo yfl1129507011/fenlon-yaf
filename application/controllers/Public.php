@@ -51,8 +51,8 @@ class PublicController extends BaseController {
 
     # 注册
     public function registerAction() {
-        //Http\Cookies::getInstance()->set('aaa', 123, 60);
-        echo Http\Cookies::getInstance()->get('aaa');
+        $user = new UserModel();
+        echo $user->dao;
         return false;
     }
 

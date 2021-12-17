@@ -7,6 +7,8 @@
  */
 namespace Image;
 
+use Http\Cookies;
+
 class Captcha {
     private static $instance = null;
     // 参数配置信息
@@ -131,7 +133,12 @@ class Captcha {
      */
     private function saveCode() {
         // todo setcookie()
-        setcookie(md5($this->flag), md5(strtolower($this->code)), $_SERVER['REQUEST_TIME']+$this->expire);
+        Cookies::getInstance()->set(
+            $this->auth($this->flag),
+            $this->auth(strtolower($this->code)),
+            $this->expire
+        );
+        //setcookie(md5($this->flag), md5(strtolower($this->code)), $_SERVER['REQUEST_TIME']+$this->expire);
     }
 
     /**
@@ -154,7 +161,16 @@ class Captcha {
      * 验证码检查
      */
     public function checkCode($code) {
-        $data = $_COOKIE[md5($this->flag)];
-        return md5(strtolower($code)) == $data;
+        //$data = $_COOKIE[$this->auth($this->flag)];
+        $cookie = Cookies::getInstance();
+        if (!$cookie->has($this->auth($this->flag))) {
+            return  false;
+        }
+        $data = $cookie->get($this->auth($this->flag));
+        return $this->auth(strtolower($code)) == $data;
+    }
+
+    private function auth($data) {
+        return md5($data);
     }
 }

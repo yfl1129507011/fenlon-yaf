@@ -9,13 +9,13 @@ namespace Http;
 class Cookies {
     private static $instance = null;
     private $config = array(
-        'prefix'    => '',  // cookie名称前缀
+        'prefix'    => 'FenLon',  // cookie名称前缀
         'expire'    => 24*60*60, // cookie保存时间（s）, 默认1天
         'path'      => '/', // cookie保存路径
         'domain'    => '', // cookie有效域名
         'secure'    => false, // cookie启用安全传输
         'httponly'  => false, // httponly 设置
-        'arrayFlag' => 'FenLon', // cookie数据数组标识
+        'arrayFlag' => 'array[]:', // cookie数据数组标识
     );
 
     private function __construct(array $config = array())
