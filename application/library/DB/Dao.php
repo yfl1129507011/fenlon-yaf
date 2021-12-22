@@ -53,6 +53,21 @@ class Dao {
     }
 
     /**
+     * 过滤不允许的字段名称
+     * @param array $data
+     * @return array
+     */
+    protected function filterField(array $data) {
+        $result = array();
+        foreach ($data as $k => $v) {
+            if (in_array($k, $this->allowFields)) {
+                $result[$k] = $v;
+            }
+        }
+        return $result;
+    }
+
+    /**
      * 过滤数据
      * @param array $data
      * @return array
@@ -70,43 +85,41 @@ class Dao {
                 $data[$this->deletedField] = time();
             }
         }
-        $result = array();
-        foreach ($data as $k => $v) {
-            if (in_array($k, $this->allowFields)) {
-                $result[$k] = $v;
-            }
-        }
-        return $result;
+
+        return $this->filterField($data);
     }
 
-    public function save(array $data) {
+    /**
+     * 添加或更新数据
+     * @param array $data
+     * @param array $condition
+     * @return bool|void
+     */
+    public function save(array $data, array $condition = array()) {
         $data = $this->filterData($data);
         if (empty($data)) {
             return false;
         }
-        if (array_key_exists($this->pk, $data)) {
+        if (array_key_exists($this->pk, $data) || !empty($condition)) {
             // 更新
+            if(empty($condition)) {
+                $condition[$this->pk] = $data[$this->pk];
+                unset($data[$this->pk]);
+            } else {
+                $condition = $this->filterField($condition);
+            }
+            return $this->db->update($data, $condition);
         } else {
             // 新增
-            return $this->insert($data);
+            return $this->db->insert($data);
         }
     }
 
     /**
-     * 添加记录
-     * @param array $data
-     * @param bool $replace
-     * @return bool
+     * 获取单条数据
+     * @param $data
      */
-    protected function insert(array $data, $replace = false) {
-        $sql = $this->db->getInsertSql($data, $replace);
-        if (!$sql) {
-            return false;
-        }
-        $result = $this->db->execute($sql, $data);
-        if ($result) {
-            return $this->db->getLastInsertId();
-        }
-        return $result;
+    public function get($data) {
+
     }
 }

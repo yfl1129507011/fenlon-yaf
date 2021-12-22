@@ -35,12 +35,13 @@ class BaseModel {
     /**
      * 保存数据，如果传入主键则更新数据
      * @param array $data
+     * @param array $condition
      * @return mixed
      */
-    public function save(array $data = array()) {
+    public function save(array $data = array(), array $condition = array()) {
         if (empty($data)) {
             $data = $this->entity->toArray();
         }
-        return $this->dao->save($data);
+        return $this->dao->save($data, $condition);
     }
 }

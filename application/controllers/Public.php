@@ -1,6 +1,6 @@
 <?php
 class PublicController extends BaseController {
-    public $rememberCookieFlag = "Form-Data";
+    const REMEMBER_COOKIE_FLAG = 'Form-Data';
     public function init()
     {
 
@@ -9,8 +9,6 @@ class PublicController extends BaseController {
     # 退出
     public function logoutAction() {
         $this->redirect('login.html');
-        //$this->forward('login');
-        //return false;
     }
 
     # 登录
@@ -27,9 +25,9 @@ class PublicController extends BaseController {
             }
 
             if (isset($postData['remember']) && $postData['remember'] == 'on') {
-                Http\Cookies::getInstance()->forever($this->rememberCookieFlag, $postData);
+                Http\Cookies::getInstance()->forever(self::REMEMBER_COOKIE_FLAG, $postData);
             } else {
-                Http\Cookies::getInstance()->delete($this->rememberCookieFlag);
+                Http\Cookies::getInstance()->delete(self::REMEMBER_COOKIE_FLAG);
             }
             $this->ajaxReturn($returnData);
         }
@@ -38,8 +36,8 @@ class PublicController extends BaseController {
         $reEmail = "";
         $rePassword = "";
         $remember = "";
-        if (Http\Cookies::getInstance()->has($this->rememberCookieFlag)) {
-            $postData = Http\Cookies::getInstance()->get($this->rememberCookieFlag);
+        if (Http\Cookies::getInstance()->has(self::REMEMBER_COOKIE_FLAG)) {
+            $postData = Http\Cookies::getInstance()->get(self::REMEMBER_COOKIE_FLAG);
             $reEmail = $postData['email'];
             $rePassword = $postData['password'];
             $remember = "on";
@@ -52,9 +50,10 @@ class PublicController extends BaseController {
     # 注册
     public function registerAction() {
         $user = new UserModel();
-        $user->uName = 'fenlon-1';
-        $user->uEmail= 'fenlon-1@126.com';
-        $user->uPassword = md5('123456');
+        $user->uName = '孔子';
+//        $user->uEmail= 'fenlon-2@126.com';
+//        $user->uPassword = md5('123456');
+        $user->uid = 3;
         $res = $user->save();
         echo '<pre>';
         print_r($res);

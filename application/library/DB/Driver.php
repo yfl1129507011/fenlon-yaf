@@ -38,6 +38,9 @@ abstract class Driver {
     // 数据库配置参数
     protected $dbConfig = array();
 
+    // 需要绑定的数据
+    protected $bind = array();
+
     public function __construct(array $dbConfig)
     {
         $this->dbConfig = $dbConfig;
@@ -49,6 +52,29 @@ abstract class Driver {
      * 解析pdo连接的dsn信息
      */
     abstract protected function parseDsn($config);
+
+    /**
+     * 获取需要绑定的数据
+     * @return array
+     */
+    public function getBind() {
+        $bind = $this->bind;
+        $this->bind = array();
+        return $bind;
+    }
+
+    /**
+     * 添加需要绑定的数据
+     * @param $key
+     * @param $value
+     */
+    protected function setBind($key, $value = false) {
+        if (is_array($key)) {
+            $this->bind = array_merge($this->bind, $key);
+        } else {
+            $this->bind[$key] = $value;
+        }
+    }
 
     /**
      * 获取最近插入的id
