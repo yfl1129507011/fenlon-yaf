@@ -9,5 +9,22 @@ namespace src\DAO;
 use DB\Dao;
 
 class User extends Dao {
+    protected $createdField = 'uCreated';
+    protected $updatedField = 'uUpdated';
+    protected $deletedField = 'uDeleted';
 
+    protected $tableName = 'fenlon_user';
+
+    protected $pk = 'uid';
+
+    protected $allowFields = array(
+        'uid',
+        'uName',
+        'uPassword',
+        'uEmail',
+        'uCreated',
+        'uUpdated',
+        'uDeleted',
+        'uStatus',
+    );
 }

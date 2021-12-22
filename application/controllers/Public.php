@@ -52,7 +52,12 @@ class PublicController extends BaseController {
     # 注册
     public function registerAction() {
         $user = new UserModel();
-        echo $user->dao;
+        $user->uName = 'fenlon-1';
+        $user->uEmail= 'fenlon-1@126.com';
+        $user->uPassword = md5('123456');
+        $res = $user->save();
+        echo '<pre>';
+        print_r($res);
         return false;
     }
 

@@ -8,6 +8,7 @@
 namespace DB;
 
 use PDO;
+use Yaf\Exception;
 
 abstract class Driver {
     // PDO 连接参数
@@ -26,6 +27,11 @@ abstract class Driver {
     protected $linkRead;
     protected $linkWrite;
 
+    // PDO操作实例
+    protected $PDOStatement;
+
+    // 影响记录行数
+    protected $numRows = 0;
     // 事务指令数
     protected $transTimes = 0;
 
@@ -44,21 +50,115 @@ abstract class Driver {
      */
     abstract protected function parseDsn($config);
 
-    public function execute($sql) {
+    /**
+     * 获取最近插入的id
+     * @param null $sequence 自增序列名
+     * @return mixed
+     */
+    public function getLastInsertId($sequence = null) {
+        return $this->linkID->lastInsertId($sequence);
+    }
 
+    /**
+     * 执行查询 返回数据集
+     * @param $sql sql指令
+     * @param array $bind 参数绑定
+     * @param bool $master 是否在主服务器读操作
+     * @return bool
+     * @throws \Exception
+     */
+    public function query($sql, $bind = [], $master = false) {
+        $this->initConnect($master);
+        if (empty($this->linkID)) {
+            return false;
+        }
+
+        try {
+            // 预处理
+            $this->PDOStatement = $this->linkID->prepare($sql);
+            // 参数绑定
+            $this->bindValue($bind);
+            // 执行语句
+            $this->PDOStatement->execute();
+            $result = $this->PDOStatement->fetchAll(PDO::FETCH_ASSOC);
+            $this->numRows = count($result);
+            return $result;
+        } catch (\PDOException $e) {
+            return $this->close()->query($sql, $bind, $master);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * 执行语句
+     * @param $sql  sql指令
+     * @param array $bind 参数绑定
+     * @return bool
+     * @throws \Exception
+     */
+    public function execute($sql, $bind = array()) {
+        $this->initConnect();
+        if (empty($this->linkID)) {
+            return false;
+        }
+
+        try {
+            // 预处理
+            $this->PDOStatement = $this->linkID->prepare($sql);
+            // 参数绑定
+            $this->bindValue($bind);
+            // 执行语句
+            $this->PDOStatement->execute();
+            $this->numRows = $this->PDOStatement->rowCount();
+            return $this->numRows;
+        } catch (\PDOException $e) {
+            return $this->close()->execute($sql, $bind);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    protected function bindValue(array $bind = array()) {
+        foreach ($bind as $k => $v) {
+            // 占位符 (1, 'abc')或(':name', 'abc')
+            $param = is_numeric($k) ? $k + 1 : ':' . $k;
+            if (is_array($v)) {
+                if (PDO::PARAM_INT == $v[1] && '' === $v[0]) {
+                    $v[0] = 0;
+                }
+                $result = $this->PDOStatement->bindValue($param, $v[0], $v[1]);
+            } else {
+                $result = $this->PDOStatement->bindValue($param, $v);
+            }
+            if (!$result) {
+                throw new \PDOException("Error occurred when binding parameters '{$param}'");
+            }
+        }
+    }
+
+    /**
+     * SQL安全过滤
+     * @param $str SQL字符串
+     * @param bool $master
+     * @return mixed
+     */
+    public function quote($str, $master = true) {
+        $this->initConnect($master);
+        return $this->linkID ? $this->linkID->quote($str) : $str;
     }
 
     /**
      * @param array $config 数据库配置信息
      * @param int $linkNum 连接id序号
      * @param array|bool $autoConnection 是否自动连接主数据库（用于分布式），
-     * 自动连接主数据库时，改参数传入主数据库的配置信息
+     * 自动连接主数据库时，该参数传入主数据库的配置信息
      * @return mixed
      * 连接数据库方法
      */
     public function connect(array $config, $linkNum = 0, $autoConnection = false) {
         if (!isset($this->links[$linkNum])) {
-            if (is_array($config['params']) && !empty($config['params'])) {
+            if (!empty($config['params']) && is_array($config['params'])) {
                 $params = $config['params'] + $this->params;
             } else {
                 $params = $this->params;
@@ -69,7 +169,11 @@ abstract class Driver {
                 }
                 $this->links[$linkNum] = new PDO($config['dsn'], $config['username'], $config['password'], $params);
             } catch (\PDOException $e) {
-                throw $e;
+                if ($autoConnection) {
+                    return $this->connect($autoConnection, $linkNum);
+                } else {
+                    throw $e;
+                }
             }
         }
 
@@ -142,11 +246,59 @@ abstract class Driver {
         }
     }
 
+    /**
+     * 启动事务
+     * @return bool
+     */
+    public function startTrans() {
+        $this->initConnect(true);
+        if (!$this->linkID) {
+            return false;
+        }
+
+        ++$this->transTimes;
+        try {
+            if (1 == $this->transTimes) {
+                $this->linkID->beginTransaction();
+            }
+        } catch (\Exception $e) {
+            return $this->close()->startTrans();
+        } catch (\Error $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * 事务提交
+     */
+    public function commit() {
+        $this->initConnect(true);
+        if (1 == $this->transTimes) {
+            $this->linkID->commit();
+        }
+
+        --$this->transTimes;
+    }
+
+    /**
+     * 事务回滚
+     */
+    public function rollback() {
+        $this->initConnect(true);
+        if (1 == $this->transTimes) {
+            $this->linkID->rollBack();
+        }
+
+        $this->transTimes = max(0, $this->transTimes - 1);
+    }
+
     public function close() {
         $this->linkID    = null;
         $this->linkWrite = null;
         $this->linkRead  = null;
         $this->links = array();
+        $this->PDOStatement = null;
+        return $this;
     }
 
     public function __destruct()
