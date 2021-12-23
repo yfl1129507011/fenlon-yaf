@@ -14,6 +14,7 @@ class Mysql extends Driver {
     // SQL 表达式
     protected $insertSql    = '%INSERT% INTO %TABLE% (%FIELD%) VALUES (%DATA%)';
     protected $updateSql    = 'UPDATE %TABLE% SET %SET% WHERE %WHERE%';
+    protected $selectSql    = 'SELECT%DISTINCT% %FIELD% FROM %TABLE% WHERE %WHERE% %GROUP% %HAVING% %ORDER% %LIMIT%';
 
     /**
      * 解析DNS
@@ -113,6 +114,34 @@ class Mysql extends Driver {
         return implode(' AND ', $result);
     }
 
+    protected function parseDistinct($distinct) {
+        return empty($distinct) ? '' : ' DISTINCT ';
+    }
+
+    protected function parseField($fields) {
+        if (empty($fields)) {
+            $fields = '*';
+        }
+        return $fields;
+    }
+
+    protected function parseGroup($group) {
+        return empty($group) ? '' : ' GROUP BY ' . $group;
+    }
+
+    protected function parseHaving($having)
+    {
+        return !empty($having) ? ' HAVING ' . $having : '';
+    }
+
+    protected function parseOrder($order) {
+        return empty($order) ? '' : ' ORDER BY ' . $order;
+    }
+
+    protected function parseLimit($limit) {
+        return empty($limit) ? '' : ' LIMIT ' . $limit;
+    }
+
 
     /**
      * 添加记录
@@ -182,5 +211,32 @@ class Mysql extends Driver {
         $bind = $this->getBind();
 
         return $this->execute($sql, $bind);
+    }
+
+    public function select(array $condition, array $option = array(
+        'distinct'  => '',
+        'field'     => '',
+        'group'     => '',
+        'having'    => '',
+        'order'     => '',
+        'limit'     => '',
+    )) {
+        $sql = str_replace(
+            array('%TABLE%', '%DISTINCT%', '%FIELD%', '%WHERE%', '%GROUP%', '%HAVING%', '%ORDER%', '%LIMIT%'),
+            array(
+                $this->parseTable(),
+                $this->parseDistinct($option['distinct']),
+                $this->parseField($option['field']),
+                $this->parseWhere($condition),
+                $this->parseGroup($option['group']),
+                $this->parseHaving($option['having']),
+                $this->parseOrder($option['order']),
+                $this->parseLimit($option['limit'])
+            ),
+            $this->selectSql
+        );
+        $bind = $this->getBind();
+
+        return $this->query($sql, $bind);
     }
 }

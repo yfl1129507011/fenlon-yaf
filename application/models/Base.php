@@ -44,4 +44,13 @@ class BaseModel {
         }
         return $this->dao->save($data, $condition);
     }
+
+    /**
+     * 获取单条记录
+     * @param $condition
+     * @return mixed
+     */
+    public function get($condition) {
+        return $this->dao->get($condition);
+    }
 }

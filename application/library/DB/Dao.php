@@ -40,7 +40,7 @@ class Dao {
     protected $allowFields = array();
 
     // 数据库连接实例
-    protected $db = null;
+    protected $db;
 
     // 数据库配置信息
     protected $dbConfig = array();
@@ -63,6 +63,16 @@ class Dao {
             if (in_array($k, $this->allowFields)) {
                 $result[$k] = $v;
             }
+        }
+        return $result;
+    }
+
+    protected function filterCondition($condition) {
+        $result = array();
+        if (is_scalar($condition)) {
+            $result[$this->pk] = $condition;
+        } elseif (is_array($condition)) {
+            $result = $this->filterField($condition);
         }
         return $result;
     }
@@ -117,9 +127,22 @@ class Dao {
 
     /**
      * 获取单条数据
-     * @param $data
+     * @param $condition
+     * @return array
      */
-    public function get($data) {
+    public function get($condition) {
+        $condition = $this->filterCondition($condition);
+        if (empty($condition)) {
+            return $condition;
+        }
 
+        $option = array(
+            'limit' => 1
+        );
+        $res = $this->db->select($condition, $option);
+        if (!empty($res)) {
+            return $res[0];
+        }
+        return $res;
     }
 }

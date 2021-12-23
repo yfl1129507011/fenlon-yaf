@@ -49,15 +49,7 @@ class PublicController extends BaseController {
 
     # 注册
     public function registerAction() {
-        $user = new UserModel();
-        $user->uName = '孔子';
-//        $user->uEmail= 'fenlon-2@126.com';
-//        $user->uPassword = md5('123456');
-        $user->uid = 3;
-        $res = $user->save();
-        echo '<pre>';
-        print_r($res);
-        return false;
+
     }
 
     # 忘记密码
