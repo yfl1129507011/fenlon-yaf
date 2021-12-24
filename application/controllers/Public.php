@@ -49,8 +49,7 @@ class PublicController extends BaseController {
 
     # 注册
     public function registerAction() {
-        echo Log::error('122');
-        return false;
+
     }
 
     # 忘记密码

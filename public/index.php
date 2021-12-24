@@ -10,5 +10,5 @@ $app = new Yaf\Application(ROOT_PATH . '/conf/application.ini');
 try {
     $app->bootstrap()->run();
 } catch (Exception $e) {
-    echo $e->getMessage();
+    Log::error($e);
 }
