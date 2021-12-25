@@ -7,7 +7,9 @@
 class BaseController extends Yaf\Controller_Abstract {
     public function init()
     {
-
+        if(! \Http\Cookies::getInstance()->has(UserModel::LOGIN_FLAG) ) {
+            $this->redirect('logout.html');
+        }
     }
 
     protected function display($tpl, array $parameters = null)

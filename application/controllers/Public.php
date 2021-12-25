@@ -8,6 +8,9 @@ class PublicController extends BaseController {
 
     # 退出
     public function logoutAction() {
+        if(\Http\Cookies::getInstance()->has(UserModel::LOGIN_FLAG) ) {
+            Http\Cookies::getInstance()->delete(UserModel::LOGIN_FLAG);
+        }
         $this->redirect('login.html');
     }
 

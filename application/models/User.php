@@ -7,6 +7,7 @@
 
 class UserModel extends BaseModel {
     const REMEMBER_COOKIE_FLAG = 'Form-Data';
+    const LOGIN_FLAG = 'Login-Data';
 
     public function login(array $data) {
         $returnData = array();
@@ -25,6 +26,7 @@ class UserModel extends BaseModel {
                 } else {
                     Http\Cookies::getInstance()->delete(self::REMEMBER_COOKIE_FLAG);
                 }
+                Http\Cookies::getInstance()->set(self::LOGIN_FLAG, $data, 24*60*60);
             } else {
                 $returnData['code'] = 401;
                 $returnData['msg'] = '账户或密码错误';
