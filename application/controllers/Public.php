@@ -1,6 +1,6 @@
 <?php
 class PublicController extends BaseController {
-    const REMEMBER_COOKIE_FLAG = 'Form-Data';
+
     public function init()
     {
 
@@ -14,30 +14,18 @@ class PublicController extends BaseController {
     # 登录
     public function loginAction() {
         if ($this->getRequest()->isPost()) {
-            $returnData = array();
-            $returnData['code'] = 200;
-            $returnData['return_url'] = '/';
             $postData = $this->getRequest()->getPost();
-            if (! Image\Captcha::getInstance()->checkCode($postData['captcha'])) {
-                $returnData['code'] = 401;
-                $returnData['msg'] = '验证码错误';
-                $this->ajaxReturn($returnData);
-            }
-
-            if (isset($postData['remember']) && $postData['remember'] == 'on') {
-                Http\Cookies::getInstance()->forever(self::REMEMBER_COOKIE_FLAG, $postData);
-            } else {
-                Http\Cookies::getInstance()->delete(self::REMEMBER_COOKIE_FLAG);
-            }
-            $this->ajaxReturn($returnData);
+            $user = new UserModel();
+            $res = $user->login($postData);
+            $this->ajaxReturn($res);
         }
 
         // 【记住我】的数据展示逻辑
         $reEmail = "";
         $rePassword = "";
         $remember = "";
-        if (Http\Cookies::getInstance()->has(self::REMEMBER_COOKIE_FLAG)) {
-            $postData = Http\Cookies::getInstance()->get(self::REMEMBER_COOKIE_FLAG);
+        if (Http\Cookies::getInstance()->has(UserModel::REMEMBER_COOKIE_FLAG)) {
+            $postData = Http\Cookies::getInstance()->get(UserModel::REMEMBER_COOKIE_FLAG);
             $reEmail = $postData['email'];
             $rePassword = $postData['password'];
             $remember = "on";
@@ -49,7 +37,12 @@ class PublicController extends BaseController {
 
     # 注册
     public function registerAction() {
-
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            $user = new UserModel();
+            $res = $user->register($postData);
+            $this->ajaxReturn($res);
+        }
     }
 
     # 忘记密码

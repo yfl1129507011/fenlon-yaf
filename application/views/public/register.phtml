@@ -23,9 +23,9 @@
         <div class="card-body">
             <p class="login-box-msg">注册新会员</p>
 
-            <form action="register" method="post">
+            <form action="register.html" method="post">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="全名">
+                    <input name="username" check-field="true" type="text" class="form-control" placeholder="全名" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="邮箱">
+                    <input name="email" check-field="true" type="email" class="form-control" placeholder="邮箱" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="密码">
+                    <input name="password" check-field="true" type="password" class="form-control" placeholder="密码" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -49,12 +49,15 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="再次输入密码">
+                    <input name="rePassword" check-field="true" type="password" class="form-control" placeholder="再次输入密码" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
+                </div>
+                <div class="input-group mb-3">
+                    <span id="feedback-mark" class="error invalid-feedback">请输入邮箱地址</span>
                 </div>
                 <div class="row">
                     <div class="col-8">
