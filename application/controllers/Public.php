@@ -16,6 +16,10 @@ class PublicController extends BaseController {
 
     # 登录
     public function loginAction() {
+        if (\Http\Cookies::getInstance()->has(UserModel::LOGIN_FLAG)) {
+            // 已登录
+            $this->redirect('/');
+        }
         if ($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost();
             $user = new UserModel();

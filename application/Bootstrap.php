@@ -5,6 +5,10 @@ class Bootstrap extends Yaf\Bootstrap_Abstract {
         //把配置保存起来
         $arrConfig = Yaf\Application::app()->getConfig();
         Yaf\Registry::set('config', $arrConfig);
+
+        // 加载数据库配置文件
+        $dbConfig = new Yaf\Config\Ini(ROOT_PATH . '/conf/database.ini');
+        Yaf\Registry::set('dbConfig', $dbConfig);
     }
 
     public function _initPlugin(Yaf\Dispatcher $dispatcher) {
@@ -31,11 +35,5 @@ class Bootstrap extends Yaf\Bootstrap_Abstract {
 
     public function _initView(Yaf\Dispatcher $dispatcher) {
         //在这里注册自己的view控制器，例如smarty,firekylin
-    }
-
-    public function _initDatabase(Yaf\Dispatcher $dispatcher) {
-        // 加载数据库配置文件
-        $dbConfig = new Yaf\Config\Ini(ROOT_PATH . '/conf/database.ini');
-        Yaf\Registry::set('dbConfig', $dbConfig);
     }
 }
