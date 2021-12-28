@@ -42,7 +42,7 @@ $(function () {
         },
         formFeedback: function (msg) {
             if (msg) {
-                this.feedbackMark.text(msg).show();
+                this.feedbackMark.removeClass('error').addClass('text-green').text(msg).show();
             }
         }
     };

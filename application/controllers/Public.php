@@ -8,9 +8,7 @@ class PublicController extends BaseController {
 
     # 退出
     public function logoutAction() {
-        if(\Http\Cookies::getInstance()->has(UserModel::LOGIN_FLAG) ) {
-            Http\Cookies::getInstance()->delete(UserModel::LOGIN_FLAG);
-        }
+        $this->logout();
         $this->redirect('login.html');
     }
 
@@ -44,6 +42,7 @@ class PublicController extends BaseController {
 
     # 注册
     public function registerAction() {
+        $this->logout();
         if ($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost();
             $user = new UserModel();
@@ -54,12 +53,36 @@ class PublicController extends BaseController {
 
     # 忘记密码
     public function forgotAction() {
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            $user = new UserModel();
+            $res = $user->sendEmailCode($postData['email']);
+            $this->ajaxReturn($res);
+        }
+    }
 
+    # 验证邮箱验证码
+    public function checkAction() {
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            $user = new UserModel();
+            $res = $user->checkEmailCode($postData['email'], $postData['code']);
+            $this->ajaxReturn($res);
+        }
+        $email = $this->getRequest()->get('email');
+        $this->getView()->assign('_email', $email);
     }
 
     # 修改密码
     public function recoverAction() {
-
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            $user = new UserModel();
+            $res = $user->resetPassword($postData['password'], $postData['rePassword'], $postData['email']);
+            $this->ajaxReturn($res);
+        }
+        $email = $this->getRequest()->get('email');
+        $this->getView()->assign('_email', $email);
     }
 
     # 生成验证码

@@ -36,4 +36,9 @@ class Bootstrap extends Yaf\Bootstrap_Abstract {
     public function _initView(Yaf\Dispatcher $dispatcher) {
         //在这里注册自己的view控制器，例如smarty,firekylin
     }
+
+    public function _initAutoload(Yaf\Dispatcher $dispatcher) {
+        // 自动加载
+         require ROOT_PATH . '/vendor/autoload.php';
+    }
 }

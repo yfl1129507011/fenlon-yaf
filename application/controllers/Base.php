@@ -12,6 +12,12 @@ class BaseController extends Yaf\Controller_Abstract {
         }
     }
 
+    protected function logout() {
+        if(\Http\Cookies::getInstance()->has(UserModel::LOGIN_FLAG) ) {
+            Http\Cookies::getInstance()->delete(UserModel::LOGIN_FLAG);
+        }
+    }
+
     protected function display($tpl, array $parameters = null)
     {
         Yaf\Dispatcher::getInstance()->disableView();  // 取消视图自动加载

@@ -43,11 +43,11 @@ class Log {
             return false;
         }
         flock($fp, LOCK_EX);
-        if (php_sapi_name() != 'cli') {
+        /*if (php_sapi_name() != 'cli') {
             $backtrace = debug_backtrace();
             $traceInfo = $backtrace[2];
             $msg = sprintf("[%s::%s] [%s] %s", $traceInfo['class'], $traceInfo['function'], $traceInfo['object']->getRequest()->getRequestUri(), $msg);
-        }
+        }*/
         $message .= $level . ' - ' . date('Y-m-d H:i:s') . ' --> ' . $msg . PHP_EOL;
         fwrite($fp, $message);
         flock($fp, LOCK_UN);

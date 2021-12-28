@@ -9,6 +9,67 @@ class UserModel extends BaseModel {
     const REMEMBER_COOKIE_FLAG = 'Form-Data';
     const LOGIN_FLAG = 'Login-Data';
 
+    public function resetPassword($password, $rePassword, $email) {
+        $returnData = array();
+        $returnData['code'] = 200;
+        $returnData['return_url'] = '/login.html';
+        if (!empty($password) && !empty($rePassword) && !empty($email)) {
+            if ($password != $rePassword) {
+                $returnData['code'] = 400;
+                $returnData['msg'] = '密码不一致';
+            } else {
+                $this->save(array('uPassword'=>md5($password)), array('uEmail'=>$email));
+            }
+        } else {
+            $returnData['code'] = 401;
+            $returnData['msg'] = '参数错误';
+        }
+
+        return $returnData;
+    }
+
+    public function checkEmailCode($email, $code) {
+        $returnData = array();
+        $returnData['code'] = 200;
+        $returnData['return_url'] = '/recover-password.html?email=' . $email;
+        if (!empty($email) && !empty($code)) {
+            $res = $this->get(array('uEmail' => $email));
+            if (!$res) {
+                $returnData['code'] = 400;
+                $returnData['msg'] = '账号错误';
+            }
+            if (!Email::checkCode($code)) {
+                $returnData['code'] = 401;
+                $returnData['msg'] = '验证码错误';
+            }
+        } else {
+            $returnData['code'] = 402;
+            $returnData['msg'] = '参数错误';
+        }
+
+        return $returnData;
+    }
+
+    public function sendEmailCode($email) {
+        $returnData = array();
+        $returnData['code'] = 200;
+        $returnData['return_url'] = '/check-code.html?email=' . $email;
+        if (!empty($email)) {
+            $res = $this->get(array('uEmail' => $email));
+            if (!$res) {
+                $returnData['code'] = 400;
+                $returnData['msg'] = '账号不存在';
+            }
+            Email::sendCode($email);
+            $returnData['msg'] = '验证码已发送';
+        } else {
+            $returnData['code'] = 402;
+            $returnData['msg'] = '参数错误';
+        }
+
+        return $returnData;
+    }
+
     public function login(array $data) {
         $returnData = array();
         $returnData['code'] = 200;

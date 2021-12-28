@@ -22,12 +22,20 @@
         </div>
         <div class="card-body">
             <p class="login-box-msg">忘记了密码？在这里轻松找回。</p>
-            <form action="forgot-password.html" method="post">
+            <form action="check-code.html" method="post">
                 <div class="input-group mb-3">
-                    <input check-field="true" name="email" type="email" class="form-control" placeholder="邮箱" required>
+                    <input  value="<?php echo $_email;?>" check-field="true" name="email" type="email" class="form-control" placeholder="邮箱" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input check-field="true" type="text" name="code" class="form-control" autocomplete="off" placeholder="验证码" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-check"></span>
                         </div>
                     </div>
                 </div>
@@ -36,7 +44,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-block">发送验证码</button>
+                        <button type="submit" class="btn btn-primary btn-block">找回密码</button>
                     </div>
                     <!-- /.col -->
                 </div>
