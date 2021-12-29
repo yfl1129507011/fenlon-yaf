@@ -37,10 +37,11 @@ class UserModel extends BaseModel {
             if (!$res) {
                 $returnData['code'] = 400;
                 $returnData['msg'] = '账号错误';
-            }
-            if (!Email::checkCode($code)) {
-                $returnData['code'] = 401;
-                $returnData['msg'] = '验证码错误';
+            } else {
+                if (!Email::checkCode($code)) {
+                    $returnData['code'] = 401;
+                    $returnData['msg'] = '验证码错误';
+                }
             }
         } else {
             $returnData['code'] = 402;
@@ -59,9 +60,10 @@ class UserModel extends BaseModel {
             if (!$res) {
                 $returnData['code'] = 400;
                 $returnData['msg'] = '账号不存在';
+            } else {
+                Email::sendCode($email);
+                $returnData['msg'] = '验证码已发送';
             }
-            Email::sendCode($email);
-            $returnData['msg'] = '验证码已发送';
         } else {
             $returnData['code'] = 402;
             $returnData['msg'] = '参数错误';

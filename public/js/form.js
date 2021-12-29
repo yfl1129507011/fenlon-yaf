@@ -40,9 +40,11 @@ $(function () {
             this.feedbackMark.hide();
             return true;
         },
-        formFeedback: function (msg) {
-            if (msg) {
+        formFeedback: function (msg, code) {
+            if (msg && code == 200) {
                 this.feedbackMark.removeClass('error').addClass('text-green').text(msg).show();
+            } else {
+                this.feedbackMark.text(msg).show();
             }
         }
     };
@@ -68,7 +70,7 @@ $(function () {
                         location.href = data.return_url;
                     }
                 } else {
-                    formCheck.formFeedback(data.msg);
+                    formCheck.formFeedback(data.msg, data.code);
                     $('#get-captcha').click();
                 }
             })
